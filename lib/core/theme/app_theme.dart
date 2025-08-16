@@ -7,7 +7,7 @@ class AppTheme {
   static const accentColor = Color(0XFF06B6D4); // Cyan vibrante
   static const surfaceColor = Color(0xFFF8FAFC); // Branco azulado
   static const backgroundcolor = Color(0xFFFFFBFF); // Branco puro
-  static const errorColor = Color(0xFF10b981); // Verde vibrante
+  static const errorColor = Color(0xFFEF4444); // Vermelho vibrante
   static const warningColor = Color(0xFFF59E0B); // Laranja vibrante
 
   AppTheme._();

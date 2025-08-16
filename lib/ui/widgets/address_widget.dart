@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cep/model/cep_model.dart';
 
 class AddressWidget extends StatelessWidget {
-  const AddressWidget({super.key});
+  final CepModel? cepModel;
+  const AddressWidget({super.key, this.cepModel});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    if (cepModel == null) {
+      return SizedBox.shrink();
+    }
+
     return Column(
       children: [
         Container(
@@ -47,18 +54,60 @@ class AddressWidget extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        _InfoCard(),
-        _InfoCard(),
-        _InfoCard(),
-        _InfoCard(),
-        _InfoCard(),
+        _InfoCard(
+          icon: Icons.location_on_rounded,
+          title: 'CEP',
+          subtitle: cepModel!.cep,
+          color: theme.colorScheme.primary,
+        ),
+        _InfoCard(
+          icon: Icons.streetview_rounded,
+          title: 'Logradouro',
+          subtitle: cepModel!.logradouro,
+          color: theme.colorScheme.secondary,
+        ),
+        _InfoCard(
+          icon: Icons.home_rounded,
+          title: 'Bairro',
+          subtitle: cepModel!.bairro,
+          color: theme.colorScheme.tertiary,
+        ),
+        _InfoCard(
+          icon: Icons.location_city_rounded,
+          title: 'Cidade',
+          subtitle: cepModel!.localidade,
+          color: Color(0xff10b981),
+        ),
+        _InfoCard(
+          icon: Icons.map_rounded,
+          title: 'Estado',
+          subtitle: cepModel!.estado,
+          color: Colors.orange,
+        ),
+        if (cepModel!.complemento.isNotEmpty)
+          _InfoCard(
+            icon: Icons.info_rounded,
+            title: 'Complemento',
+            subtitle: cepModel!.complemento,
+            color: Colors.purple,
+          ),
       ],
     );
   }
 }
 
 class _InfoCard extends StatelessWidget {
-  const _InfoCard();
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+
+  const _InfoCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +117,13 @@ class _InfoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: Colors.black.withValues(alpha: 0.2),
+          color: color.withValues(alpha: 0.2),
           width: 1,
         ),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: color.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
@@ -85,13 +134,13 @@ class _InfoCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
 
             child: Icon(
-              Icons.home,
-              color: Colors.red,
+              icon,
+              color: color,
               size: 24,
             ),
           ),
@@ -103,14 +152,14 @@ class _InfoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'CEP',
+                  title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.red,
+                    color: color,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 Text(
-                  '0111-000',
+                  subtitle,
                   style: Theme.of(
                     context,
                   ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
